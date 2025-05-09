@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Login - Hairstylist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: hsl(140, 56%, 52%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 320px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .back-link, p a {
+            color: #4CAF50;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Login</h2>
+    <form onsubmit="return validateLogin()" novalidate>
+        <input type="email" id="login-email" placeholder="Email" required />
+        <span id="login-email-error" class="error"></span>
+
+        <input type="password" id="login-password" placeholder="Password" required />
+        <span id="login-password-error" class="error"></span>
+
+        <button type="submit">Login</button>
+    </form>
+    <p><a href="forgot.html">Forgot password?</a></p>
+    <a href="index.html" class="back-link">← Back to Home</a>
+</div>
+
+<script>
+    function validateLogin() {
+        let isValid = true;
+
+        const email = document.getElementById('login-email').value;
+        const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if (!email.match(emailPattern)) {
+            document.getElementById('login-email-error').innerText = 'Enter a valid email address.';
+            isValid = false;
+        } else {
+            document.getElementById('login-email-error').innerText = '';
+        }
+
+        const password = document.getElementById('login-password').value;
+        if (password.length < 6) {
+            document.getElementById('login-password-error').innerText = 'Password must be at least 6 characters.';
+            isValid = false;
+        } else {
+            document.getElementById('login-password-error').innerText = '';
+        }
+
+        return isValid;
+    }
+</script>
+
+</body>
+</html>

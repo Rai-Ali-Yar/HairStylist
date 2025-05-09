@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Forgot Password - Hairstylist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: hsl(140, 56%, 52%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #eff1ed;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 320px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .back-link, p a {
+            color: #4CAF50;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Forgot Password</h2>
+    <form onsubmit="return validateForgotPassword()" novalidate>
+        <input type="email" id="forget-email" placeholder="Enter your email" required />
+        <span id="forget-email-error" class="error"></span>
+
+        <button type="submit">Reset Password</button>
+    </form>
+    <a href="index.html" class="back-link">← Back to Home</a>
+</div>
+
+<script>
+    function validateForgotPassword() {
+        const email = document.getElementById('forget-email').value;
+        const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+        if (!email.match(emailPattern)) {
+            document.getElementById('forget-email-error').innerText = 'Enter a valid email address.';
+            return false;
+        }
+        document.getElementById('forget-email-error').innerText = '';
+        return true;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Before After & Template</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            width: 100%;
+            height: 74px;
+            background: linear-gradient(to right, #4caf50, #269757);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .logoname {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .menu {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .menu a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .menu a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            display: flex;
+            flex: 1;
+            flex-wrap: wrap;
+        }
+
+        /* LEFT CONTAINER */
+        .left-container {
+            width: 50%;
+            height: 100%;
+            background: #375835;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .before-after {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 100%;
+            max-height: 400px;
+            overflow: hidden;
+        }
+
+        .before, .after {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .before {
+            background-image: url('before.png');
+        }
+
+        .after {
+            background-image: url('after.png');
+            width: 50%;
+        }
+
+        .slider {
+            position: absolute;
+            width: 5px;
+            height: 100%;
+            background: white;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: ew-resize;
+        }
+
+        .label {
+            position: absolute;
+            top: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 5px 10px;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+
+        .before-label {
+            left: 10px;
+            transition: opacity 0.3s;
+        }
+
+        .after-label {
+            right: 10px;
+        }
+
+        /* RIGHT CONTAINER */
+        .right-container {
+            width: 50%;
+            height: 100%;
+            background: #a7ce91;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .upload-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            background: white;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .upload-box:hover {
+            background: #f0f0f0;
+        }
+
+        .example-images {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .example-images img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .example-images img:hover {
+            transform: scale(1.1);
+        }
+
+        .store-buttons img {
+            width: 120px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        /* MEDIA QUERIES */
+        @media (max-width: 768px) {
+            header {
+                padding: 0 10px;
+                height: 60px;
+            }
+
+            .logo img {
+                height: 40px;
+            }
+
+            .logoname {
+                font-size: 20px;
+            }
+
+            .menu a {
+                font-size: 14px;
+            }
+
+            .content {
+                flex-direction: column;
+            }
+
+            .left-container, 
+            .right-container {
+                width: 100%;
+                height: 50%;
+            }
+
+            .before-after {
+                max-height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                flex-direction: column;
+                height: auto;
+                padding: 10px;
+            }
+
+            .menu {
+                flex-direction: column;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .logoname {
+                font-size: 18px;
+            }
+
+            .before-after {
+                max-height: 250px;
+            }
+
+            .example-images img {
+                width: 50px;
+                height: 50px;
+            }
+
+            .store-buttons img {
+                width: 100px;
+            }
+        }
+        footer {
+            background: linear-gradient(to right, #4caf50, #269757);
+            color: white;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+    
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+    
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+    
+        .footer-logo img {
+            height: 40px;
+        }
+    
+        .footer-logo span {
+            font-size: 22px;
+            font-weight: bold;
+        }
+    
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+    
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.2s ease;
+        }
+    
+        .footer-links a:hover {
+            text-decoration: underline;
+            color: #d9ffd9;
+        }
+    
+        .social-icons {
+            display: flex;
+            gap: 10px;
+        }
+    
+        .social-icons img {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.2s ease;
+        }
+        
+        .social-icons a:hover img {
+            transform: scale(1.5); /* Increased hover size */
+        }
+    
+        .footer-bottom {
+            margin-top: 10px;
+            text-align: center;
+            font-size: 14px;
+            color: #d9ffd9;
+        }
+    
+        /* Responsive Footer Adjustments */
+        @media (max-width: 768px) {
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+    
+            .footer-links {
+                justify-content: center;
+                gap: 15px;
+            }
+    
+            .social-icons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="logo.png" alt="Hairstylist" />
+            <span class="logoname">Hairstylist</span>
+        </div>
+        <nav class="menu">
+            <a href="index.html">Home</a>
+            <a href="#">Premium Version</a>
+            <a href="signup.html">Sign Up</a>
+            <a href="login.html">Login</a>
+            <a href="#">Earn Credits</a>
+        </nav>
+    </header>
+
+    <div class="content">
+        <!-- LEFT CONTAINER -->
+        <div class="left-container">
+            <div class="before-after">
+                <div class="before"></div>
+                <div class="after"></div>
+                <div class="slider"></div>
+                <div class="label before-label">Before</div>
+                <div class="label after-label">After</div>
+            </div>
+        </div>
+
+        <!-- RIGHT CONTAINER -->
+        <div class="right-container">
+            <h1>AI Hairstyle Changer</h1>
+            <p>Try on hairstyles for free!</p>
+            <div class="upload-box">Choose an image or drop a file here</div>
+            <p>Or try with an example</p>
+            <div class="example-images">
+                <img src="pic1.png" alt="Example 1">
+                <img src="pic2.png" alt="Example 2">
+                <img src="pic3.png" alt="Example 3">
+                <img src="pic4.png" alt="Example 4">
+            </div>
+            <div class="store-buttons">
+                <img src="appstore.png" alt="App Store">
+                <img src="playstore.png" alt="Google Play">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const container = document.querySelector('.before-after');
+        const after = document.querySelector('.after');
+        const slider = document.querySelector('.slider');
+
+        container.addEventListener('mousemove', (e) => {
+            let x = e.clientX - container.getBoundingClientRect().left;
+            let width = (x / container.clientWidth) * 100;
+            after.style.width = `${width}%`;
+            slider.style.left = `${width}%`;
+        });
+    </script>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-logo">
+            <img src="logo.png" alt="Hairstylist" />
+            <span>Hairstylist</span>
+        </div>
+
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+            <a href="#">FAQs</a>
+        </div>
+
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2025 Hairstylist. All Rights Reserved.</p>
+    </div>
+</footer>
+</body>
+</html>
