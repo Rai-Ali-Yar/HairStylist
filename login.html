@@ -69,7 +69,7 @@
 
 <div class="form-container">
     <h2>Login</h2>
-    <form onsubmit="return validateLogin()" novalidate>
+    <form id="loginForm" novalidate>
         <input type="email" id="login-email" placeholder="Email" required />
         <span id="login-email-error" class="error"></span>
 
@@ -77,6 +77,8 @@
         <span id="login-password-error" class="error"></span>
 
         <button type="submit">Login</button>
+        <span id="login-success" style="color:green;display:none;"></span>
+        <span id="login-error" style="color:red;display:none;"></span>
     </form>
     <p><a href="forgot.html">Forgot password?</a></p>
     <a href="index.html" class="back-link">← Back to Home</a>
@@ -105,6 +107,37 @@
 
         return isValid;
     }
+
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        document.getElementById('login-success').style.display = 'none';
+        document.getElementById('login-error').style.display = 'none';
+        if (!validateLogin()) return;
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        try {
+            const res = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                document.getElementById('login-success').innerText = 'Login successful!';
+                document.getElementById('login-success').style.display = 'block';
+                document.getElementById('login-error').style.display = 'none';
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('userEmail', email);
+                window.location.href = 'index.html';
+            } else {
+                document.getElementById('login-error').innerText = data.message || 'Login failed.';
+                document.getElementById('login-error').style.display = 'block';
+            }
+        } catch (err) {
+            document.getElementById('login-error').innerText = 'Network error.';
+            document.getElementById('login-error').style.display = 'block';
+        }
+    });
 </script>
 
 </body>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Hairstylist</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #4caf50; color: #222; margin: 0; padding: 0; }
+        .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px #d9ffd9; padding: 32px; }
+        h1 { color: #269757; }
+        label { display: block; margin-top: 16px; }
+        input, textarea { width: 100%; padding: 8px; margin-top: 4px; border-radius: 4px; border: 1px solid #ccc; }
+        button { margin-top: 16px; background: #269757; color: #fff; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #4caf50; }
+        .info { margin-top: 24px; }
+        a { color: #269757; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <form>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+        <div class="info">
+            <p>For support or inquiries, email us at <a href="mailto:support@hairstylist.com">support@hairstylist.com</a></p>
+            <p><a href="index.html">Back to Home</a></p>
+        </div>
+    </div>
+</body>
+</html> 

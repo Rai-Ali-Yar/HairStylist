@@ -70,7 +70,7 @@
 
 <div class="form-container">
     <h2>Sign Up</h2>
-    <form onsubmit="return validateSignup()" novalidate>
+    <form id="signupForm" novalidate>
         <input type="text" id="username" placeholder="Username" required />
         <span id="username-error" class="error"></span>
 
@@ -84,6 +84,8 @@
         <span id="confirm-password-error" class="error"></span>
 
         <button type="submit">Sign Up</button>
+        <span id="signup-success" style="color:green;display:none;"></span>
+        <span id="signup-error" style="color:red;display:none;"></span>
     </form>
     <p>Already have an account? <a href="login.html">Login here</a></p>
     <a href="index.html" class="back-link">← Back to Home</a>
@@ -132,6 +134,34 @@
 
         return isValid;
     }
+
+    document.getElementById('signupForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        document.getElementById('signup-success').style.display = 'none';
+        document.getElementById('signup-error').style.display = 'none';
+        if (!validateSignup()) return;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        try {
+            const res = await fetch('http://localhost:5000/api/auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                document.getElementById('signup-success').innerText = 'Signup successful! You can now log in.';
+                document.getElementById('signup-success').style.display = 'block';
+                document.getElementById('signup-error').style.display = 'none';
+            } else {
+                document.getElementById('signup-error').innerText = data.message || 'Signup failed.';
+                document.getElementById('signup-error').style.display = 'block';
+            }
+        } catch (err) {
+            document.getElementById('signup-error').innerText = 'Network error.';
+            document.getElementById('signup-error').style.display = 'block';
+        }
+    });
 </script>
 
 </body>

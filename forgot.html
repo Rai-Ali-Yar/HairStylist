@@ -55,7 +55,12 @@
             margin-bottom: 5px;
             display: block;
         }
-
+        .success {
+            color: green;
+            font-size: 14px;
+            margin-bottom: 5px;
+            display: block;
+        }
         .back-link, p a {
             color: #4CAF50;
             text-decoration: none;
@@ -69,26 +74,112 @@
 
 <div class="form-container">
     <h2>Forgot Password</h2>
-    <form onsubmit="return validateForgotPassword()" novalidate>
-        <input type="email" id="forget-email" placeholder="Enter your email" required />
-        <span id="forget-email-error" class="error"></span>
-
-        <button type="submit">Reset Password</button>
+    <form id="forgotForm" novalidate>
+        <div id="step1">
+            <input type="email" id="forget-email" placeholder="Enter your email" required />
+            <span id="forget-email-error" class="error"></span>
+            <button type="submit">Send Code</button>
+            <span id="forgot-success" class="success" style="display:none;"></span>
+            <span id="forgot-error" class="error" style="display:none;"></span>
+        </div>
+        <div id="step2" style="display:none;">
+            <input type="text" id="reset-code" placeholder="Enter 4-digit code from email" maxlength="4" required />
+            <span id="reset-code-error" class="error"></span>
+            <input type="password" id="new-password" placeholder="New Password" required />
+            <span id="new-password-error" class="error"></span>
+            <input type="password" id="confirm-new-password" placeholder="Confirm New Password" required />
+            <span id="confirm-new-password-error" class="error"></span>
+            <button type="button" id="resetBtn">Reset Password</button>
+            <span id="reset-success" class="success" style="display:none;"></span>
+            <span id="reset-error" class="error" style="display:none;"></span>
+        </div>
     </form>
     <a href="index.html" class="back-link">← Back to Home</a>
 </div>
 
 <script>
-    function validateForgotPassword() {
+    let userEmail = '';
+    document.getElementById('forgotForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        document.getElementById('forgot-success').style.display = 'none';
+        document.getElementById('forgot-error').style.display = 'none';
         const email = document.getElementById('forget-email').value;
         const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
         if (!email.match(emailPattern)) {
             document.getElementById('forget-email-error').innerText = 'Enter a valid email address.';
-            return false;
+            return;
         }
         document.getElementById('forget-email-error').innerText = '';
-        return true;
-    }
+        try {
+            const res = await fetch('http://localhost:5000/api/auth/forgot-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                userEmail = email;
+                document.getElementById('forgot-success').innerText = 'A code has been sent to your email.';
+                document.getElementById('forgot-success').style.display = 'block';
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
+            } else {
+                document.getElementById('forgot-error').innerText = data.message || 'Failed to send code.';
+                document.getElementById('forgot-error').style.display = 'block';
+            }
+        } catch (err) {
+            document.getElementById('forgot-error').innerText = 'Network error.';
+            document.getElementById('forgot-error').style.display = 'block';
+        }
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', async function() {
+        document.getElementById('reset-success').style.display = 'none';
+        document.getElementById('reset-error').style.display = 'none';
+        // Validate code and passwords
+        const code = document.getElementById('reset-code').value.trim();
+        const newPassword = document.getElementById('new-password').value;
+        const confirmNewPassword = document.getElementById('confirm-new-password').value;
+        let valid = true;
+        if (!code || !/^[0-9]{4}$/.test(code)) {
+            document.getElementById('reset-code-error').innerText = 'Enter the 4-digit code.';
+            valid = false;
+        } else {
+            document.getElementById('reset-code-error').innerText = '';
+        }
+        if (newPassword.length < 6) {
+            document.getElementById('new-password-error').innerText = 'Password must be at least 6 characters.';
+            valid = false;
+        } else {
+            document.getElementById('new-password-error').innerText = '';
+        }
+        if (confirmNewPassword !== newPassword) {
+            document.getElementById('confirm-new-password-error').innerText = 'Passwords do not match.';
+            valid = false;
+        } else {
+            document.getElementById('confirm-new-password-error').innerText = '';
+        }
+        if (!valid) return;
+        try {
+            const res = await fetch(`http://localhost:5000/api/auth/reset-password/${code}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ resetCode: code, newPassword })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                document.getElementById('reset-success').innerText = 'Password reset successful! You can now log in.';
+                document.getElementById('reset-success').style.display = 'block';
+                document.getElementById('reset-error').style.display = 'none';
+            } else {
+                document.getElementById('reset-error').innerText = data.message || 'Failed to reset password.';
+                document.getElementById('reset-error').style.display = 'block';
+            }
+        } catch (err) {
+            document.getElementById('reset-error').innerText = 'Network error.';
+            document.getElementById('reset-error').style.display = 'block';
+        }
+    });
 </script>
 
 </body>
